@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -30,5 +29,11 @@ public class EditActivity extends AppCompatActivity {
         data2.add("みんな教室では日本語で話します。");
         data2.add("学食はとても便利です。");
         adapter2.notifyDataSetChanged();
+
+
+
     }
+
+
+
 }
