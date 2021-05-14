@@ -1,0 +1,2 @@
+rootProject.name = "VocabularyNote2"
+include ':app'
