@@ -58,9 +58,9 @@ public class EditActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(EditActivity.this, EditItem.class);
                 startActivity(intent);
-                ListData listData = new ListData(Integer.toString(arrayList.size()+1),"kanji","hatsuon","imi");
-                arrayList.add(listData);
-                listAdapter.notifyDataSetChanged();
+//                ListData listData = new ListData(Integer.toString(arrayList.size()+1),"kanji","hatsuon","imi");
+//                arrayList.add(listData);
+//                listAdapter.notifyDataSetChanged();
 
 
             }

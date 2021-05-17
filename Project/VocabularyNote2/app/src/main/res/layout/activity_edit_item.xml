@@ -55,9 +55,9 @@
             android:textSize="50sp"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="450dp" />
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="450dp" />-->
 
     <Button
         android:id="@+id/btn_add"
