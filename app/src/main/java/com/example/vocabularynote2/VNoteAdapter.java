@@ -16,6 +16,8 @@ import java.util.ArrayList;
 
 public class VNoteAdapter extends RecyclerView.Adapter<VNoteAdapter.CustomViewHolder> {
 
+    // 단어장 화면
+
     private ArrayList<VNoteData> arrayList;
 
     public VNoteAdapter(ArrayList<VNoteData> arrayList) {

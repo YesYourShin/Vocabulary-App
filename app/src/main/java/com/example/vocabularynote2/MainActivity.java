@@ -20,6 +20,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    // MainActivity의 intent 버튼
+
     private DrawerLayout drawerLayout;
     private View drawerView;
     private ListView list;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        // MainActivity의 intent
         addList = findViewById(R.id.addList);
         addList.setOnClickListener(new View.OnClickListener() {
             @Override

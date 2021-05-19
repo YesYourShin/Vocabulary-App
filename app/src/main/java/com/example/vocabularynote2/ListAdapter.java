@@ -21,6 +21,8 @@ import java.util.ArrayList;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.CustomViewHolder> {
 
+    // 단어장 안에 리스트 화면
+
     private ArrayList<ListData> arrayList; // 리스트 뷰에 아이템을 담을 ArrayList
 
     public ListAdapter(ArrayList<ListData> arrayList) {

@@ -2,6 +2,8 @@ package com.example.vocabularynote2;
 
 public class VNoteData {
 
+    // 단어장 이름 리스트
+
     private String list_title;
 
     public VNoteData(String list_title) {

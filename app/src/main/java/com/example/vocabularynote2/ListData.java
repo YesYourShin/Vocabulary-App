@@ -2,6 +2,8 @@ package com.example.vocabularynote2;
 
 public class ListData {
 
+    //단어장 안에 단어들 리스트
+
     private String num;
     private String kanji;
     private String hatsuon;

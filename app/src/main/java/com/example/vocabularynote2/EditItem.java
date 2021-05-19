@@ -12,6 +12,8 @@ import org.w3c.dom.Text;
 
 public class EditItem extends AppCompatActivity {
 
+    // 단어 리스트 수정 시 화면
+
     private Button btn_add;
     private EditText edit_kanji;
     private String kanji;

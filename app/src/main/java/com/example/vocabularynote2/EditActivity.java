@@ -18,6 +18,8 @@ import java.util.List;
 
 public class EditActivity extends AppCompatActivity {
 
+    // 단어장 안에 단어 리스트 화면
+
     private ListView editList;
     private ArrayList<ListData> arrayList;
     private ListAdapter listAdapter;
