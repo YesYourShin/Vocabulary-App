@@ -7,6 +7,14 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class EditItem extends AppCompatActivity {
 
@@ -40,9 +48,36 @@ public class EditItem extends AppCompatActivity {
                 kanji = edit_kanji.getText().toString();
                 hatsuon = edit_hatsuon.getText().toString();
                 imi = edit_imi.getText().toString();
-                vintent.putExtra("kanji",kanji);
-                vintent.putExtra("hatsuon",hatsuon);
-                vintent.putExtra("imi",imi);
+
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            boolean success = jsonObject.getBoolean("success");
+                            if (success) {
+                                Toast.makeText(getApplicationContext(), "성공", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(EditItem.this, VListActivity.class);
+                                startActivity(intent);
+
+                            } else {
+                                Toast.makeText(getApplicationContext(), "실패", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                    }
+                };
+
+                VocabularyRequest vocabularyRequest = new VocabularyRequest(kanji, hatsuon, imi, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(EditItem.this);
+                queue.add(VocabularyRequest);
+
+//                vintent.putExtra("kanji",kanji);
+//                vintent.putExtra("hatsuon",hatsuon);
+//                vintent.putExtra("imi",imi);
                 Intent intent = new Intent(EditItem.this,VListActivity.class);
                 Intent vintent = new Intent(EditItem.this, VocaListAdapter.class);
 
