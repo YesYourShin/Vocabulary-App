@@ -9,8 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.VocabularyNote3">
-        <activity android:name=".EditItem"
-            android:parentActivityName=".VListActivity"></activity>
         <activity
             android:name=".VListActivity"
             android:parentActivityName=".MainActivity">
