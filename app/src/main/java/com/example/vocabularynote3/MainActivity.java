@@ -1,15 +1,23 @@
 package com.example.vocabularynote3;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import java.util.ArrayList;
+
+
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -22,10 +30,24 @@ public class MainActivity extends AppCompatActivity {
     // 인텐트
     private Button mbtn_add;
 
+    
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+
+
+
+
+
+
+
+
 
 
         //메인화면 리스트
@@ -35,21 +57,71 @@ public class MainActivity extends AppCompatActivity {
 
         arrayList = new ArrayList();
 
-        vNoteAdapter = new VNoteAdapter(arrayList);
+        vNoteAdapter = new VNoteAdapter(getApplicationContext(), arrayList);
         recyclerView.setAdapter(vNoteAdapter);
+
+
+
 
         mbtn_add = (Button)findViewById(R.id.mbtn_add);
         mbtn_add.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                VNoteData vNoteData = new VNoteData("hi");
-                arrayList.add(vNoteData);
-                vNoteAdapter.notifyDataSetChanged();
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+                View view = LayoutInflater.from(MainActivity.this)
+                        .inflate(R.layout.edit_title, null, false);
+                builder.setView(view);
+
+                final Button btn_tadd = (Button) view.findViewById(R.id.btn_tadd);
+                final EditText edit_title = (EditText) view.findViewById(R.id.edit_title);
+                btn_tadd.setText("삽입");
+
+                final AlertDialog dialog = builder.create();
+
+// 3. 다이얼로그에 있는 삽입 버튼을 클릭하면
+
+                btn_tadd.setOnClickListener(new View.OnClickListener() {
+
+
+                    public void onClick(View v) {
+
+
+                        // 4. 사용자가 입력한 내용을 가져와서
+                        String title = edit_title.getText().toString();
+
+                        // 5. ArrayList에 추가하고
+
+                        VNoteData vNoteData = new VNoteData(title);
+                        arrayList.add(vNoteData); //마지막 줄에 삽입됨
+                        //mArrayList.add(dict);
+
+
+                        // 6. 어댑터에서 RecyclerView에 반영하도록 합니다.
+
+//                        vNoteAdapter.notifyItemInserted(0);
+                        vNoteAdapter.notifyDataSetChanged();
+
+
+                        dialog.dismiss();
+                    }
+                });
+
+                dialog.show();
+
+
+
+
+
+
+//                VNoteData vNoteData = new VNoteData("hi");
+//                arrayList.add(vNoteData);
+//                vNoteAdapter.notifyDataSetChanged();
 
                 //인텐트
-                Intent intent = new Intent(MainActivity.this, VListActivity.class);
-                startActivity(intent); // 액티비티 이동
+//                Intent intent = new Intent(MainActivity.this, VListActivity.class);
+//                startActivity(intent); // 액티비티 이동
 
 
             }

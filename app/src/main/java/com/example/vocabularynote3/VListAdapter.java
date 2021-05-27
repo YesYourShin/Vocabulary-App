@@ -22,44 +22,6 @@ public class VListAdapter extends RecyclerView.Adapter<VListAdapter.CustomViewHo
     private ArrayList<VListData> arrayList;
     private Context context;
 
-    public VListAdapter(Context context, ArrayList<VListData> arrayList) {
-        this.arrayList = arrayList;
-        this.context = context;
-    }
-
-    @Override
-    public VListAdapter.CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.vlist_item_list,parent,false);
-        VListAdapter.CustomViewHolder holder = new VListAdapter.CustomViewHolder(view);
-
-        return holder;
-    }
-
-    @Override
-    public void onBindViewHolder(CustomViewHolder holder, int position) {
-        holder.kanji.setText(arrayList.get(position).getKanji());
-        holder.hatsuon.setText(arrayList.get(position).getHatsuon());
-        holder.imi.setText(arrayList.get(position).getImi());
-
-
-        holder.itemView.setTag(position);
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-////
-//                Intent intent = new Intent(v.getContext(), EditItem.class);
-//                v.getContext().startActivity(intent);
-//            }
-//        });
-    }
-
-    @Override
-    public int getItemCount() {
-        return (null != arrayList ? arrayList.size() : 0);
-    }
-
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 
         protected TextView kanji;
@@ -161,4 +123,44 @@ public class VListAdapter extends RecyclerView.Adapter<VListAdapter.CustomViewHo
             }
         };
     }
+
+    public VListAdapter(Context context, ArrayList<VListData> arrayList) {
+        this.arrayList = arrayList;
+        this.context = context;
+    }
+
+    @Override
+    public VListAdapter.CustomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.vlist_item_list,parent,false);
+        VListAdapter.CustomViewHolder holder = new VListAdapter.CustomViewHolder(view);
+
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(CustomViewHolder holder, int position) {
+        holder.kanji.setText(arrayList.get(position).getKanji());
+        holder.hatsuon.setText(arrayList.get(position).getHatsuon());
+        holder.imi.setText(arrayList.get(position).getImi());
+
+
+        holder.itemView.setTag(position);
+//        holder.itemView.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+////
+//                Intent intent = new Intent(v.getContext(), EditItem.class);
+//                v.getContext().startActivity(intent);
+//            }
+//        });
+    }
+
+    @Override
+    public int getItemCount() {
+        return (null != arrayList ? arrayList.size() : 0);
+    }
+
+
 }

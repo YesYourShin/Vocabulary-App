@@ -29,6 +29,9 @@ public class VListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vlist);
 
+
+
+
         recyclerView = (RecyclerView) findViewById(R.id.rv);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -38,9 +41,9 @@ public class VListActivity extends AppCompatActivity {
         vListAdapter = new VListAdapter(this, arrayList);
         recyclerView.setAdapter(vListAdapter);
 
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
-                linearLayoutManager.getOrientation());
-        recyclerView.addItemDecoration(dividerItemDecoration);
+//        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+//                linearLayoutManager.getOrientation());
+//        recyclerView.addItemDecoration(dividerItemDecoration);
 
         Button btn_add = (Button) findViewById(R.id.btn_add);
         btn_add.setOnClickListener(new View.OnClickListener() {
@@ -73,8 +76,7 @@ public class VListActivity extends AppCompatActivity {
 
                         VListData vListData = new VListData(kanji, hatsuon, imi);
 
-                        arrayList.add(0, vListData);
-                        //mArrayList.add(dict); //마지막 줄에 삽입
+                        arrayList.add(vListData);//마지막 줄에 삽입
                         vListAdapter.notifyDataSetChanged();
 
                         dialog.dismiss();

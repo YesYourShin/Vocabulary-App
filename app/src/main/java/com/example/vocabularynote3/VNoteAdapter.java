@@ -1,12 +1,19 @@
 package com.example.vocabularynote3;
 
+import android.content.Context;
 import android.content.Intent;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -15,9 +22,105 @@ public class VNoteAdapter extends RecyclerView.Adapter<VNoteAdapter.CustomViewHo
 
     // 메인 화면 리스트
     private ArrayList<VNoteData> arrayList;
+    private Context context;
 
-    public VNoteAdapter(ArrayList<VNoteData> arrayList) {
+    public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
+
+        protected TextView list_title;
+
+        public CustomViewHolder(View itemView) {
+            super(itemView);
+            this.list_title = (TextView) itemView.findViewById(R.id.list_title);
+
+            itemView.setOnCreateContextMenuListener(this);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {  // 3. 컨텍스트 메뉴를 생성하고 메뉴 항목 선택시 호출되는 리스너를 등록해줍니다. ID 1001, 1002로 어떤 메뉴를 선택했는지 리스너에서 구분하게 됩니다.
+
+            MenuItem Edit = menu.add(Menu.NONE, 1001, 1, "편집");
+            MenuItem Delete = menu.add(Menu.NONE, 1002, 2, "삭제");
+            Edit.setOnMenuItemClickListener(onEditMenu);
+            Delete.setOnMenuItemClickListener(onEditMenu);
+
+        }
+
+        // 4. 컨텍스트 메뉴에서 항목 클릭시 동작을 설정합니다.
+        private final MenuItem.OnMenuItemClickListener onEditMenu = new MenuItem.OnMenuItemClickListener() {
+
+
+
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+
+
+                switch (item.getItemId()) {
+                    case 1001:  // 5. 편집 항목을 선택시
+
+
+                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+
+                        // 다이얼로그를 보여주기 위해 edit_box.xml 파일을 사용합니다.
+
+                        View view = LayoutInflater.from(context).inflate(R.layout.edit_title, null, false);
+                        builder.setView(view);
+                        final Button btn_tadd = (Button) view.findViewById(R.id.btn_tadd);
+                        final EditText edit_title = (EditText) view.findViewById(R.id.edit_title);
+
+
+
+                        // 6. 해당 줄에 입력되어 있던 데이터를 불러와서 다이얼로그에 보여줍니다.
+                        edit_title.setText(arrayList.get(getAdapterPosition()).getList_title());
+
+
+                        final AlertDialog dialog = builder.create();
+                        btn_tadd.setOnClickListener(new View.OnClickListener() {
+
+
+                            // 7. 수정 버튼을 클릭하면 현재 UI에 입력되어 있는 내용으로
+
+                            public void onClick(View v) {
+                                String title = edit_title.getText().toString();
+
+                                VNoteData vNoteData = new VNoteData(title);
+
+
+                                // 8. ListArray에 있는 데이터를 변경하고
+                                arrayList.set(getAdapterPosition(), vNoteData);
+
+
+                                // 9. 어댑터에서 RecyclerView에 반영하도록 합니다.
+
+                                notifyItemChanged(getAdapterPosition());
+
+                                dialog.dismiss();
+                            }
+                        });
+
+                        dialog.show();
+
+                        break;
+
+                    case 1002:
+
+                        arrayList.remove(getAdapterPosition());
+                        notifyItemRemoved(getAdapterPosition());
+                        notifyItemRangeChanged(getAdapterPosition(), arrayList.size());
+
+                        break;
+
+                }
+                return true;
+            }
+        };
+
+    }
+
+
+
+    public VNoteAdapter(Context context, ArrayList<VNoteData> arrayList) {
         this.arrayList = arrayList;
+        this.context = context;
     }
 
     @NonNull
@@ -25,7 +128,7 @@ public class VNoteAdapter extends RecyclerView.Adapter<VNoteAdapter.CustomViewHo
     public VNoteAdapter.CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.vnote_item_list,parent,false);
-        CustomViewHolder holder = new CustomViewHolder(view);
+        VNoteAdapter.CustomViewHolder holder = new CustomViewHolder(view);
 
         return holder;
     }
@@ -36,15 +139,15 @@ public class VNoteAdapter extends RecyclerView.Adapter<VNoteAdapter.CustomViewHo
 
 
         holder.itemView.setTag(position);
-//        holder.itemView.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//
-//                Intent intent = new Intent(v.getContext(), EditItem.class);
-//                v.getContext().startActivity(intent);
-//            }
-//        });
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(v.getContext(), VListActivity.class);
+                v.getContext().startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -52,13 +155,5 @@ public class VNoteAdapter extends RecyclerView.Adapter<VNoteAdapter.CustomViewHo
         return (null != arrayList ? arrayList.size() : 0);
     }
 
-    public class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        protected TextView list_title;
-
-        public CustomViewHolder(View itemView) {
-            super(itemView);
-            this.list_title = (TextView) itemView.findViewById(R.id.list_title);
-        }
-    }
 }
