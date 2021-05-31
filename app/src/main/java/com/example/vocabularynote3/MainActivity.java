@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.io.File;
 import java.util.ArrayList;
 
 
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     // 메인 화면 리스트
-    private ArrayList<VNoteData> arrayList;
+    private ArrayList<String> arrayList;
     private VNoteAdapter vNoteAdapter;
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
@@ -30,24 +31,10 @@ public class MainActivity extends AppCompatActivity {
     // 인텐트
     private Button mbtn_add;
 
-    
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
-
-
-
-
-
-
-
 
 
         //메인화면 리스트
@@ -55,13 +42,10 @@ public class MainActivity extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        arrayList = new ArrayList();
+        loadList();
 
         vNoteAdapter = new VNoteAdapter(getApplicationContext(), arrayList);
         recyclerView.setAdapter(vNoteAdapter);
-
-
-
 
         mbtn_add = (Button)findViewById(R.id.mbtn_add);
         mbtn_add.setOnClickListener(new View.OnClickListener() {
@@ -93,16 +77,20 @@ public class MainActivity extends AppCompatActivity {
 
                         // 5. ArrayList에 추가하고
 
-                        VNoteData vNoteData = new VNoteData(title);
-                        arrayList.add(vNoteData); //마지막 줄에 삽입됨
+
+//                        arrayList.add(title); //마지막 줄에 삽입됨
                         //mArrayList.add(dict);
 
 
                         // 6. 어댑터에서 RecyclerView에 반영하도록 합니다.
 
 //                        vNoteAdapter.notifyItemInserted(0);
-                        vNoteAdapter.notifyDataSetChanged();
+//                        vNoteAdapter.notifyDataSetChanged();
 
+
+                        Intent intent = new Intent(v.getContext(), VListActivity.class);
+                        intent.putExtra("noteName", title);
+                        v.getContext().startActivity(intent);
 
                         dialog.dismiss();
                     }
@@ -133,4 +121,18 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+    private void loadList() {
+        arrayList = new ArrayList<>();
+        File dir = getFilesDir();
+        File[] list = dir.listFiles();
+        for(File file : list) {
+            String name = file.getName();
+            String[] split = name.split("\\.");
+            String notename = split[0];
+            arrayList.add(notename);
+        }
+    }
+
+
 }

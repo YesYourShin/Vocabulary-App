@@ -15,11 +15,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toolbar;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class VListActivity extends AppCompatActivity {
 
-    private ArrayList<VListData> arrayList;
+    private String noteName;
+    private VNoteData vNoteData;
     private VListAdapter vListAdapter;
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
@@ -29,16 +40,16 @@ public class VListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vlist);
 
-
+        noteName = getIntent().getStringExtra("noteName");
+        load(noteName);
 
 
         recyclerView = (RecyclerView) findViewById(R.id.rv);
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        arrayList = new ArrayList<>();
 
-        vListAdapter = new VListAdapter(this, arrayList);
+        vListAdapter = new VListAdapter(this, vNoteData.getvListDataArrayList());
         recyclerView.setAdapter(vListAdapter);
 
 //        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
@@ -76,10 +87,11 @@ public class VListActivity extends AppCompatActivity {
 
                         VListData vListData = new VListData(kanji, hatsuon, imi);
 
-                        arrayList.add(vListData);//마지막 줄에 삽입
+                        vNoteData.getvListDataArrayList().add(vListData);//마지막 줄에 삽입
                         vListAdapter.notifyDataSetChanged();
 
                         dialog.dismiss();
+                        save(noteName);
                     }
                 });
                 dialog.show();
@@ -95,4 +107,44 @@ public class VListActivity extends AppCompatActivity {
 //    }
         });
     }
+
+    private void save(String name){
+        File file  = new File(getFilesDir(),name + ".json");
+        try {
+            JSONObject obj = vNoteData.toJSONObject();
+            String json = obj.toString(2);
+            byte[] bytes = json.getBytes();
+            OutputStream os = new FileOutputStream(file);
+            os.write(bytes);
+        } catch (FileNotFoundException | JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void load(String name) {
+        File file  = new File(getFilesDir(),name + ".json");
+        try {
+            byte[] bytes = new byte[(int)file.length()];
+            InputStream is = new FileInputStream(file);
+            is.read(bytes);
+
+            String str = new String(bytes);
+            JSONObject obj = new JSONObject(str);
+
+            vNoteData = VNoteData.fromJSONObject(obj);
+
+
+        } catch (FileNotFoundException e) {
+            vNoteData = new VNoteData(name);
+            save(name);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

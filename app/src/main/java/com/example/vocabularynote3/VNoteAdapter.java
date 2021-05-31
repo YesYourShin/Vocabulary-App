@@ -21,7 +21,7 @@ import java.util.ArrayList;
 public class VNoteAdapter extends RecyclerView.Adapter<VNoteAdapter.CustomViewHolder> {
 
     // 메인 화면 리스트
-    private ArrayList<VNoteData> arrayList;
+    private ArrayList<String> arrayList;
     private Context context;
 
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener{
@@ -70,7 +70,7 @@ public class VNoteAdapter extends RecyclerView.Adapter<VNoteAdapter.CustomViewHo
 
 
                         // 6. 해당 줄에 입력되어 있던 데이터를 불러와서 다이얼로그에 보여줍니다.
-                        edit_title.setText(arrayList.get(getAdapterPosition()).getList_title());
+                        edit_title.setText(arrayList.get(getAdapterPosition()));
 
 
                         final AlertDialog dialog = builder.create();
@@ -82,11 +82,11 @@ public class VNoteAdapter extends RecyclerView.Adapter<VNoteAdapter.CustomViewHo
                             public void onClick(View v) {
                                 String title = edit_title.getText().toString();
 
-                                VNoteData vNoteData = new VNoteData(title);
+
 
 
                                 // 8. ListArray에 있는 데이터를 변경하고
-                                arrayList.set(getAdapterPosition(), vNoteData);
+                                arrayList.set(getAdapterPosition(),title);
 
 
                                 // 9. 어댑터에서 RecyclerView에 반영하도록 합니다.
@@ -118,7 +118,7 @@ public class VNoteAdapter extends RecyclerView.Adapter<VNoteAdapter.CustomViewHo
 
 
 
-    public VNoteAdapter(Context context, ArrayList<VNoteData> arrayList) {
+    public VNoteAdapter(Context context, ArrayList<String> arrayList) {
         this.arrayList = arrayList;
         this.context = context;
     }
@@ -135,7 +135,8 @@ public class VNoteAdapter extends RecyclerView.Adapter<VNoteAdapter.CustomViewHo
 
     @Override
     public void onBindViewHolder(@NonNull VNoteAdapter.CustomViewHolder holder, int position) {
-        holder.list_title.setText(arrayList.get(position).getList_title());
+        String noteName = arrayList.get(position);
+        holder.list_title.setText(noteName);
 
 
         holder.itemView.setTag(position);
@@ -145,6 +146,7 @@ public class VNoteAdapter extends RecyclerView.Adapter<VNoteAdapter.CustomViewHo
             public void onClick(View v) {
 
                 Intent intent = new Intent(v.getContext(), VListActivity.class);
+                intent.putExtra("noteName", noteName);
                 v.getContext().startActivity(intent);
             }
         });
