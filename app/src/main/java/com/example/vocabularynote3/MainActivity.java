@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         loadList();
 
-        vNoteAdapter = new VNoteAdapter(getApplicationContext(), arrayList);
+        vNoteAdapter = new VNoteAdapter(this, arrayList);
         recyclerView.setAdapter(vNoteAdapter);
 
         mbtn_add = (Button)findViewById(R.id.mbtn_add);

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class VListAdapter extends RecyclerView.Adapter<VListAdapter.CustomViewHolder>{
     private ArrayList<VListData> arrayList;
-    private Context context;
+    private VListActivity vListActivity;
 
     public class CustomViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 
@@ -60,11 +60,11 @@ public class VListAdapter extends RecyclerView.Adapter<VListAdapter.CustomViewHo
                     case 1001:  // 5. 편집 항목을 선택시
 
 
-                        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                        AlertDialog.Builder builder = new AlertDialog.Builder(vListActivity);
 
                         // 다이얼로그를 보여주기 위해 edit_box.xml 파일을 사용합니다.
 
-                        View view = LayoutInflater.from(context).inflate(R.layout.activity_edit_item, null, false);
+                        View view = LayoutInflater.from(vListActivity).inflate(R.layout.activity_edit_item, null, false);
                         builder.setView(view);
                         final Button btn_add = (Button) view.findViewById(R.id.btn_add);
                         final EditText edit_kanji = (EditText) view.findViewById(R.id.edit_kanji);
@@ -103,6 +103,7 @@ public class VListAdapter extends RecyclerView.Adapter<VListAdapter.CustomViewHo
                                 notifyItemChanged(getAdapterPosition());
 
                                 dialog.dismiss();
+                                vListActivity.save();
                             }
                         });
 
@@ -115,6 +116,7 @@ public class VListAdapter extends RecyclerView.Adapter<VListAdapter.CustomViewHo
                         arrayList.remove(getAdapterPosition());
                         notifyItemRemoved(getAdapterPosition());
                         notifyItemRangeChanged(getAdapterPosition(), arrayList.size());
+                        vListActivity.save();
 
                         break;
 
@@ -124,9 +126,9 @@ public class VListAdapter extends RecyclerView.Adapter<VListAdapter.CustomViewHo
         };
     }
 
-    public VListAdapter(Context context, ArrayList<VListData> arrayList) {
+    public VListAdapter(VListActivity vListActivity, ArrayList<VListData> arrayList) {
         this.arrayList = arrayList;
-        this.context = context;
+        this.vListActivity = vListActivity;
     }
 
     @Override

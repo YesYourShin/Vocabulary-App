@@ -1,5 +1,6 @@
 package com.example.vocabularynote3;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.ContextMenu;
@@ -11,11 +12,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
+
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 public class VNoteAdapter extends RecyclerView.Adapter<VNoteAdapter.CustomViewHolder> {
@@ -82,18 +85,24 @@ public class VNoteAdapter extends RecyclerView.Adapter<VNoteAdapter.CustomViewHo
                             public void onClick(View v) {
                                 String title = edit_title.getText().toString();
 
+                                boolean result = rename(arrayList.get(getAdapterPosition()), title);
+                                if (result == false) {
+                                    Toast.makeText(context, "단어장 이름을 확인해주세요", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    // 8. ListArray에 있는 데이터를 변경하고
+                                    arrayList.set(getAdapterPosition(),title);
+
+
+                                    // 9. 어댑터에서 RecyclerView에 반영하도록 합니다.
+
+                                    notifyItemChanged(getAdapterPosition());
+
+                                    dialog.dismiss();
+                                }
 
 
 
-                                // 8. ListArray에 있는 데이터를 변경하고
-                                arrayList.set(getAdapterPosition(),title);
 
-
-                                // 9. 어댑터에서 RecyclerView에 반영하도록 합니다.
-
-                                notifyItemChanged(getAdapterPosition());
-
-                                dialog.dismiss();
                             }
                         });
 
@@ -103,6 +112,7 @@ public class VNoteAdapter extends RecyclerView.Adapter<VNoteAdapter.CustomViewHo
 
                     case 1002:
 
+                        delete(arrayList.get(getAdapterPosition()));
                         arrayList.remove(getAdapterPosition());
                         notifyItemRemoved(getAdapterPosition());
                         notifyItemRangeChanged(getAdapterPosition(), arrayList.size());
@@ -155,6 +165,21 @@ public class VNoteAdapter extends RecyclerView.Adapter<VNoteAdapter.CustomViewHo
     @Override
     public int getItemCount() {
         return (null != arrayList ? arrayList.size() : 0);
+    }
+
+    void delete(String name) {
+        File file  = new File(context.getFilesDir(),name + ".json");
+        file.delete();
+    }
+
+    boolean rename(String name, String newname) {
+        File file  = new File(context.getFilesDir(),name + ".json");
+        File newfile  = new File(context.getFilesDir(),newname + ".json");
+
+        if (newfile.exists()) return false;
+        file.renameTo(newfile);
+
+        return true;
     }
 
 

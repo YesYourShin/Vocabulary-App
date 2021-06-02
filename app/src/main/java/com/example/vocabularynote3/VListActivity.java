@@ -107,6 +107,10 @@ public class VListActivity extends AppCompatActivity {
 //    }
         });
     }
+    public void save() {
+        this.save(noteName);
+    }
+
 
     private void save(String name){
         File file  = new File(getFilesDir(),name + ".json");
