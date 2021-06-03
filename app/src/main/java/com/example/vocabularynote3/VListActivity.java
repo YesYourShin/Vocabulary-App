@@ -48,6 +48,7 @@ public class VListActivity extends AppCompatActivity {
         linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
 
         vListAdapter = new VListAdapter(this, vNoteData.getvListDataArrayList());
         recyclerView.setAdapter(vListAdapter);

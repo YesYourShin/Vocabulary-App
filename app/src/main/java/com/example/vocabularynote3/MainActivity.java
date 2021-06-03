@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         loadList();
+        recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getApplicationContext()));
 
         vNoteAdapter = new VNoteAdapter(this, arrayList);
         recyclerView.setAdapter(vNoteAdapter);
